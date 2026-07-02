@@ -6,7 +6,7 @@ import "./style.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/deuda">
       <Routes>
         <Route path="/*" element={<App />} />
       </Routes>
