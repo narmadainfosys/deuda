@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #1e1a17;
+  --color-fog: #f5f1ea;
+  --color-sunset: #e86b3a;
+  --color-ridge: #2f6f6d;
+  --color-stone: #c9b8a7;
+  --font-display: "Playfair Display", serif;
+  --font-body: "Space Grotesk", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.prose-deuda h2 {
+  @apply text-2xl font-bold text-ink mt-12 mb-4 font-display;
+}
+.prose-deuda h3 {
+  @apply text-lg font-semibold text-ink mt-8 mb-3;
+}
+.prose-deuda p {
+  @apply text-stone-700 leading-relaxed mb-4;
+}
+.prose-deuda code {
+  @apply text-sm bg-stone-100 px-1.5 py-0.5 rounded;
+}
+.prose-deuda pre {
+  @apply bg-ink text-fog p-4 rounded-xl overflow-x-auto text-sm mb-6;
+}
+.prose-deuda pre code {
+  @apply bg-transparent text-fog px-0 py-0;
+}

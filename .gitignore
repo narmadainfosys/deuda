@@ -1,0 +1,38 @@
+# Binaries
+/deuda
+/deuda.exe
+cmd/deuda/deuda
+cmd/deuda/deuda.exe
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+dist/
+build/
+out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Go
+*.test
+*.out
+profile.cov
+
+# Env
+.env
+.env.local
+
+# Website build output
+website/node_modules/
+website/dist/
