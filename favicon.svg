@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#e86b3a" stroke-width="4"/>
+  <circle cx="50" cy="30" r="6" fill="#2f6f6d"/>
+  <circle cx="30" cy="60" r="6" fill="#2f6f6d"/>
+  <circle cx="70" cy="60" r="6" fill="#2f6f6d"/>
+  <circle cx="37" cy="42" r="4" fill="#e86b3a"/>
+  <circle cx="63" cy="42" r="4" fill="#e86b3a"/>
+  <circle cx="50" cy="72" r="4" fill="#e86b3a"/>
+  <line x1="50" y1="36" x2="37" y2="42" stroke="#c9b8a7" stroke-width="2"/>
+  <line x1="50" y1="36" x2="63" y2="42" stroke="#c9b8a7" stroke-width="2"/>
+  <line x1="37" y1="42" x2="30" y2="60" stroke="#c9b8a7" stroke-width="2"/>
+  <line x1="63" y1="42" x2="70" y2="60" stroke="#c9b8a7" stroke-width="2"/>
+  <line x1="30" y1="60" x2="50" y2="72" stroke="#c9b8a7" stroke-width="2"/>
+  <line x1="70" y1="60" x2="50" y2="72" stroke="#c9b8a7" stroke-width="2"/>
+  <text x="50" y="92" text-anchor="middle" font-size="8" fill="#1e1a17" font-family="inherit">deuda</text>
+</svg>
