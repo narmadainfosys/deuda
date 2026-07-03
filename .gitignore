@@ -3,6 +3,8 @@
 /deuda.exe
 cmd/deuda/deuda
 cmd/deuda/deuda.exe
+cmd/api/api
+cmd/api/api.exe
 
 # Dependencies
 node_modules/
