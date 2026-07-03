@@ -101,8 +101,11 @@ deuda.narmadainfosys.com ──▶ Netcup VPS ──▶ Docker ──▶ nginx +
 
 | Domain | Purpose | Host | Status |
 |--------|---------|------|--------|
-| `deuda.narmadainfosys.com` | Primary — marketing site, docs, registry | Netcup VPS | ❌ Not set up |
-| `narmadainfosys.github.io/deuda` | Fallback — GitHub Pages mirror | GitHub Pages | ✅ Live |
+| `deuda.narmadainfosys.com` | Deuda marketing site, docs, registry | Netcup VPS | ❌ Not set up |
+| `psherpa.me` + `pemba.narmadainfosys.com` | Pemba Sherpa biography | Netcup VPS | ❌ Migrating from AWS |
+| `chintan.narmadainfosys.com` | Chintan Raj Bhandari biography | Netcup VPS | ❌ Not started |
+| `bipin.narmadainfosys.com` | Bipin Karki biography | Netcup VPS | ❌ Not started |
+| `narmadainfosys.github.io/deuda` | GitHub Pages fallback for Deuda | GitHub Pages | ✅ Live |
 | `narmadainfosys.com` | Org homepage (WordPress) | Current hosting | ✅ Live |
 
 **Setup `deuda.narmadainfosys.com`:**
@@ -158,7 +161,7 @@ Cloudflare DNS ──▶ Netcup VPS ──▶ Docker ──▶ nginx ──▶ s
                                                     SQLite
 ```
 
-### 1. Pemba Sherpa (psherpa.me)
+### 1. Pemba Sherpa (psherpa.me / pemba.narmadainfosys.com)
 
 **Source**: AWS (S3 + CloudFront + 5 Lambda + 3 DynamoDB + SES + API Gateway)
 
@@ -176,7 +179,7 @@ Cloudflare DNS ──▶ Netcup VPS ──▶ Docker ──▶ nginx ──▶ s
 
 **Data already exported**: 3 DynamoDB tables → JSON in `infra_admin/01_docs/system/deployments/pemba-sherpa-migration-discovery/`
 
-### 2. Chintan Raj Bhandari
+### 2. Chintan Raj Bhandari (chintan.narmadainfosys.com)
 
 **Source**: S3 bucket (gwoe AWS account) + CloudFront E3HHKMWD74DNOV
 
@@ -187,7 +190,7 @@ Cloudflare DNS ──▶ Netcup VPS ──▶ Docker ──▶ nginx ──▶ s
 4. Deploy to same Netcup server (additional nginx server block)
 5. Set up DNS via Cloudflare
 
-### 3. Bipin Karki (bipindai.com?)
+### 3. Bipin Karki (bipin.narmadainfosys.com)
 
 **Source**: Local Vue 3 + Vite project at `/Users/bishisht/work/biographical_websites/bipindai/`
 
