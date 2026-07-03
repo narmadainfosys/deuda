@@ -1,0 +1,11 @@
+title: "My Deuda Site"
+description: "A site built with Deuda"
+base: "/"
+language: "en"
+author: ""
+
+navigation:
+  - label: "Home"
+    path: "/"
+  - label: "About"
+    path: "/about"
