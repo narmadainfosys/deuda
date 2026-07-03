@@ -148,18 +148,91 @@ During `deuda build`, the CLI POSTs to `deuda.narmadainfosys.com/api/register`:
 
 ---
 
+## API Server (Subscription + Contact Forms)
+
+Every biography site needs a backend for subscription and contact forms. One Go binary, deployed per site.
+
+### API Endpoints
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `POST` | `/api/subscribe` | Subscribe email — stores in SQLite, sends welcome via SES |
+| `POST` | `/api/contact` | Submit contact message — stores in SQLite, notifies site owner via SES |
+| `GET` | `/api/verify?token=<token>` | Verify email subscription (click from email link) |
+
+### SQLite Schema (per site)
+
+```sql
+CREATE TABLE subscribers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT UNIQUE NOT NULL,
+  verified INTEGER DEFAULT 0,
+  token TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE contacts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  message TEXT NOT NULL,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE sponsors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  amount TEXT,
+  message TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+```
+
+### SES Integration
+
+- Shared SES sender: `i@psherpa.me` (psherpa.me domain verified)
+- Welcome email template on subscription
+- Notification email on contact form submission
+- Verification email with token link
+
+### API Binary Architecture
+
+```
+cmd/api/main.go          Shared API entry point (reads flag: --site <name>)
+internal/api/
+  server.go              HTTP server setup, routes
+  handlers.go            subscribe, contact, verify handlers
+  db.go                  SQLite operations
+  email.go               SES email sending
+  middleware.go          CORS, rate limiting, logging
+```
+
+The same binary serves all sites — the `--site` flag determines which SQLite database to use.
+
+---
+
 ## Biography Site Migrations
 
 All three sites share the same target architecture:
 
 ```
-Cloudflare DNS ──▶ Netcup VPS ──▶ Docker ──▶ nginx ──▶ static files
-                                                │
-                                                └──▶ Go API (if needed)
-                                                      │
-                                                      ▼
-                                                    SQLite
+Cloudflare DNS ──▶ Netcup VPS ──▶ Docker (per site)
+                                      │
+                                      ├── nginx ──▶ static files
+                                      │
+                                      └── Go API binary
+                                            │
+                                            ├── POST /api/subscribe  (SES email)
+                                            ├── POST /api/contact    (SES email)
+                                            ├── GET  /api/verify     (email confirm)
+                                            └── SQLite
+                                                  ├── subscribers
+                                                  ├── contacts
+                                                  └── sponsors
 ```
+
+**Every site gets subscription + contact form** — the Go API binary is standard in every biography site deployment, not optional. Same API, separate SQLite database per site. SES sender (`i@psherpa.me`) is shared.
 
 ### 1. Pemba Sherpa (psherpa.me / pemba.narmadainfosys.com)
 
@@ -186,9 +259,11 @@ Cloudflare DNS ──▶ Netcup VPS ──▶ Docker ──▶ nginx ──▶ s
 **Migration steps**:
 1. Inspect S3 bucket for content
 2. Create Deuda project at `examples/chintan-bio/`
-3. Convert content to markdown
-4. Deploy to same Netcup server (additional nginx server block)
-5. Set up DNS via Cloudflare
+3. Convert content to markdown, preserve design
+4. Add subscription form and contact form to the React template (via Deuda's shared components)
+5. Deploy Go API binary alongside static files (same as Pemba — SQLite + SES)
+6. Docker Compose with nginx + Go API on Netcup
+7. Set up DNS: `chintan.narmadainfosys.com` → Netcup IP
 
 ### 3. Bipin Karki (bipin.narmadainfosys.com)
 
@@ -198,7 +273,10 @@ Cloudflare DNS ──▶ Netcup VPS ──▶ Docker ──▶ nginx ──▶ s
 1. Read existing Vue project, extract content and design patterns
 2. Rebuild as markdown + Deuda React template at `examples/bipin-karki/`
 3. Preserve visual design language
-4. Deploy alongside others on Netcup
+4. Add subscription form and contact form to the React template
+5. Deploy Go API binary with SQLite + SES
+6. Docker Compose on Netcup with nginx
+7. Set up DNS: `bipin.narmadainfosys.com` → Netcup IP
 
 ---
 
@@ -211,11 +289,16 @@ Cloudflare DNS ──▶ Netcup VPS ──▶ Docker ──▶ nginx ──▶ s
 - ✅ GitHub Pages deployment
 
 ### v0.2.0 (Next)
+- Build the shared Go API server (`cmd/api/`):
+  - Subscribe, contact, verify endpoints
+  - SQLite storage (subscribers, contacts, sponsors tables)
+  - SES email sending (welcome, notification, verification)
+  - `--site` flag for multi-site support
+- Embed API server in the Deuda binary (`deuda api` command)
 - Set up `deuda.narmadainfosys.com` on Netcup (Docker + nginx + SSL)
 - Migrate Deuda's own site from GitHub Pages to Netcup as primary
-- `deuda deploy` command (SSH + rsync)
 - `build_with_deuda` — registry API + CLI integration
-- Pemba Sherpa → Deuda project (content + Go API replacement)
+- Pemba Sherpa content migration → Deuda project
 
 ### v0.3.0
 - Chintan Raj Bhandari site migration
