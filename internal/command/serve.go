@@ -19,7 +19,7 @@ func (c *ServeCommand) Short() string { return "Start the development server" }
 func (c *ServeCommand) Run(args []string) error {
 	fs := newFlagSet("serve")
 	dir := fs.String("dir", ".", "project directory")
-	port := fs.String("port", "5173", "dev server port")
+	port := fs.String("port", "4444", "dev server port")
 
 	if err := fs.Parse(args); err != nil {
 		return err
