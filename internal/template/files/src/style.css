@@ -133,3 +133,87 @@ body {
   font-size: 0.875rem;
   border-top: 1px solid #e2e8f0;
 }
+
+.deuda-form {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.deuda-form h3 {
+  margin-bottom: 0.5rem;
+}
+
+.deuda-form p {
+  color: #64748b;
+  margin-bottom: 1rem;
+}
+
+.deuda-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.deuda-form input,
+.deuda-form textarea {
+  padding: 0.625rem 0.875rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+}
+
+.deuda-form input:focus,
+.deuda-form textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.deuda-form button {
+  padding: 0.625rem 1.25rem;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.deuda-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.deuda-form button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.form-msg {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin: 0;
+}
+
+.form-msg.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.form-msg.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.subscribe-form form {
+  flex-direction: row;
+}
+
+.subscribe-form input {
+  flex: 1;
+}

@@ -3,9 +3,12 @@ description: "A site built with Deuda"
 base: "/"
 language: "en"
 author: ""
+api_url: "http://localhost:8080"
 
 navigation:
   - label: "Home"
     path: "/"
   - label: "About"
     path: "/about"
+  - label: "Contact"
+    path: "/contact"

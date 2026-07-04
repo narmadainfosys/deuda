@@ -13,6 +13,7 @@ type SiteConfig struct {
 	Base        string    `yaml:"base"`
 	Language    string    `yaml:"language"`
 	Author      string    `yaml:"author"`
+	APIURL      string    `yaml:"api_url"`
 	Navigation  []NavItem `yaml:"navigation"`
 }
 
@@ -48,6 +49,7 @@ func Default(name string) *SiteConfig {
 		Description: "A site built with Deuda",
 		Base:        "/",
 		Language:    "en",
+		APIURL:      "http://localhost:8080",
 		Navigation: []NavItem{
 			{Label: "Home", Path: "/"},
 		},
