@@ -1,0 +1,9 @@
+title: "Chintan Raj Bhandari"
+description: "Personal website of Chintan Raj Bhandari — coming soon."
+base: "/"
+language: "en"
+author: "Chintan Raj Bhandari"
+api_url: ""
+navigation:
+  - label: "Home"
+    path: "/"

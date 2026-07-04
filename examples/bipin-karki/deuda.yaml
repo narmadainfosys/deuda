@@ -1,0 +1,9 @@
+title: "Bipin Karki"
+description: "Personal website of Bipin Karki — coming soon."
+base: "/"
+language: "en"
+author: "Bipin Karki"
+api_url: ""
+navigation:
+  - label: "Home"
+    path: "/"

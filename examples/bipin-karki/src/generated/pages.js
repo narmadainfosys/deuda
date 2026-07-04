@@ -1,0 +1,42 @@
+export const pages = [
+  {
+    slug: "about",
+    title: "About",
+    html: "<p>This site is built with <a href=\"https://github.com/narmadainfosys/deuda\">Deuda</a>, a static site generator from Farwest Nepal.</p>\n<p>Deuda produces fast, SEO-optimized React SPAs from simple markdown content.</p>",
+    date: "",
+    showSubscribe: false,
+    showContact: false,
+  },
+  {
+    slug: "contact",
+    title: "Contact",
+    html: "<p>Have a question or want to get in touch? Fill out the form below and I&rsquo;ll get back to you.</p>",
+    date: "",
+    showSubscribe: false,
+    showContact: true,
+  },
+  {
+    slug: "html-example",
+    title: "HTML Example",
+    html: "<h2>This page uses raw HTML</h2>\n\n<p>Instead of markdown, you can write pages directly in <strong>HTML</strong>.</p>\n\n<div style=\"background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:1.5rem;margin:1.5rem 0\">\n  <h3 style=\"margin-top:0;color:#166534\">✓ HTML Support</h3>\n  <p style=\"margin-bottom:0;color:#166534\">\n    Any valid HTML works here — <a href=\"/\">including links</a>, images, and custom styles.\n  </p>\n</div>\n\n<p>Name a file <code>something.html</code> instead of <code>something.md</code> and the body will be used as raw HTML.</p>",
+    date: "",
+    showSubscribe: false,
+    showContact: false,
+  },
+  {
+    slug: "index",
+    title: "Bipin Karki",
+    html: "<div style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:4rem 2rem\">\n  <h1 style=\"font-size:4rem;margin-bottom:0.5rem\">🔧</h1>\n  <h2 style=\"font-size:2rem;margin-bottom:1rem;color:var(--ridge,#2f6f6d)\">Coming Soon</h2>\n  <p style=\"max-width:500px;color:#64748b\">\n    The personal website of <strong>Bipin Karki</strong> is under construction.\n    Check back for updates.\n  </p>\n</div>",
+    date: "",
+    showSubscribe: false,
+    showContact: false,
+  },
+  {
+    slug: "index",
+    title: "Home",
+    html: "<p>Welcome to your <strong>Deuda</strong> site! This is the default home page.</p>\n<p>Edit <code>content/pages/index.md</code> to change this content, or add new markdown files to create more pages.</p>",
+    date: "",
+    showSubscribe: false,
+    showContact: false,
+  },
+];
