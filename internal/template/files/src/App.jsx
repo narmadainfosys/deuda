@@ -2,6 +2,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import { siteConfig } from "./generated/config.js";
 import { pages } from "./generated/pages.js";
 import PageShell from "./PageShell.jsx";
+import SubscribeForm from "./SubscribeForm.jsx";
+import ContactForm from "./ContactForm.jsx";
 
 export default function App() {
   return (
@@ -25,6 +27,8 @@ function PageContent({ page }) {
     <article>
       <h1>{page.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: page.html }} />
+      {page.showSubscribe && <><hr /><SubscribeForm /></>}
+      {page.showContact && <><hr /><ContactForm /></>}
     </article>
   );
 }

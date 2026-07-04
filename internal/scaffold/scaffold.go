@@ -90,6 +90,8 @@ func writeConfig(dir string, cfg *config.SiteConfig) error {
 description: %q
 base: "/"
 language: "en"
+author: ""
+api_url: "http://localhost:8080"
 
 navigation:
   - label: "Home"

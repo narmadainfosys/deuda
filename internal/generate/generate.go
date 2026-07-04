@@ -17,17 +17,22 @@ import (
 )
 
 type Page struct {
-	Slug    string
-	Title   string
-	HTML    string
-	Date    string
-	Content string
+	Slug          string
+	Title         string
+	HTML          string
+	Date          string
+	Content       string
+	Draft         bool
+	ShowSubscribe bool `yaml:"show_subscribe"`
+	ShowContact   bool `yaml:"show_contact"`
 }
 
 type pageFrontmatter struct {
-	Title string `yaml:"title"`
-	Date  string `yaml:"date"`
-	Draft bool   `yaml:"draft"`
+	Title         string `yaml:"title"`
+	Date          string `yaml:"date"`
+	Draft         bool   `yaml:"draft"`
+	ShowSubscribe *bool  `yaml:"show_subscribe"`
+	ShowContact   *bool  `yaml:"show_contact"`
 }
 
 const fmDelim = "---"
@@ -52,25 +57,44 @@ func LoadPages(contentDir string) ([]Page, error) {
 
 	var pages []Page
 	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".md") {
+		if entry.IsDir() {
 			continue
 		}
 
-		data, err := os.ReadFile(filepath.Join(contentDir, entry.Name()))
-		if err != nil {
-			return nil, fmt.Errorf("reading %s: %w", entry.Name(), err)
+		name := entry.Name()
+		var slug string
+		var isHTML bool
+
+		switch {
+		case strings.HasSuffix(name, ".md"):
+			slug = strings.TrimSuffix(name, ".md")
+		case strings.HasSuffix(name, ".html"):
+			slug = strings.TrimSuffix(name, ".html")
+			isHTML = true
+		default:
+			continue
 		}
 
-		slug := strings.TrimSuffix(entry.Name(), ".md")
+		data, err := os.ReadFile(filepath.Join(contentDir, name))
+		if err != nil {
+			return nil, fmt.Errorf("reading %s: %w", name, err)
+		}
+
 		fm, body := parseFrontmatter(data)
 
 		if fm.Draft {
 			continue
 		}
 
-		var buf bytes.Buffer
-		if err := md.Convert([]byte(body), &buf); err != nil {
-			return nil, fmt.Errorf("converting %s: %w", entry.Name(), err)
+		var pageHTML string
+		if isHTML {
+			pageHTML = strings.TrimSpace(body)
+		} else {
+			var buf bytes.Buffer
+			if err := md.Convert([]byte(body), &buf); err != nil {
+				return nil, fmt.Errorf("converting %s: %w", name, err)
+			}
+			pageHTML = strings.TrimSpace(buf.String())
 		}
 
 		title := fm.Title
@@ -82,13 +106,22 @@ func LoadPages(contentDir string) ([]Page, error) {
 			}
 		}
 
-		pages = append(pages, Page{
+		p := Page{
 			Slug:    slug,
 			Title:   title,
-			HTML:    strings.TrimSpace(buf.String()),
+			HTML:    pageHTML,
 			Date:    fm.Date,
 			Content: strings.TrimSpace(body),
-		})
+		}
+
+		if fm.ShowSubscribe != nil {
+			p.ShowSubscribe = *fm.ShowSubscribe
+		}
+		if fm.ShowContact != nil {
+			p.ShowContact = *fm.ShowContact
+		}
+
+		pages = append(pages, p)
 	}
 
 	sort.Slice(pages, func(i, j int) bool {
@@ -170,9 +203,11 @@ func (g *Generator) writeConfigJS(cfg *config.SiteConfig) error {
   description: %q,
   base: %q,
   language: %q,
+  author: %q,
+  apiUrl: %q,
   nav: [%s],
 };
-`, cfg.Title, cfg.Description, cfg.Base, cfg.Language, navJS)
+`, cfg.Title, cfg.Description, cfg.Base, cfg.Language, cfg.Author, cfg.APIURL, navJS)
 
 	return os.WriteFile(filepath.Join(genDir, "config.js"), []byte(src), 0644)
 }
@@ -200,6 +235,8 @@ const jsTemplate = `export const pages = [
     title: {{printf "%q" .Title}},
     html: {{printf "%q" .HTML}},
     date: {{printf "%q" .Date}},
+    showSubscribe: {{.ShowSubscribe}},
+    showContact: {{.ShowContact}},
   },
 {{- end}}
 ];
