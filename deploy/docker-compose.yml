@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/api/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - api-data:/data
+    environment:
+      - SITE_NAME=${API_SITE_NAME:-Pemba Sherpa}
+      - SITE_URL=${API_SITE_URL:-https://psherpa.me}
+      - SMTP_HOST=${SMTP_HOST:-email-smtp.us-east-1.amazonaws.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SENDER_EMAIL=${SENDER_EMAIL:-i@psherpa.me}
+      - NOTIFY_EMAIL=${NOTIFY_EMAIL:-i@psherpa.me}
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Site static files — mount pre-built dist directories
+      - ../examples/pemba-sherpa/dist:/usr/share/nginx/pemba:ro
+      - ../examples/chintan-bio/dist:/usr/share/nginx/chintan:ro
+      - ../examples/bipin-karki/dist:/usr/share/nginx/bipin:ro
+      # Deuda website (marketing site)
+      - ../website/dist:/usr/share/nginx/deuda:ro
+      # Optional: SSL certs (bind mount when available)
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  api-data:
